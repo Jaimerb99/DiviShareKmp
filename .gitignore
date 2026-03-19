@@ -1,0 +1,34 @@
+# --- Android & Gradle ---
+.gradle/
+build/
+*/build/
+local.properties
+.cxx/
+
+# --- JetBrains IDEs (Android Studio / IntelliJ) ---
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# --- Kotlin Multiplatform & iOS ---
+*.kexe
+*.knm
+*.klib
+iosApp/iosApp.xcworkspace/xcuserdata/
+iosApp/Pods/
+iosApp/.symlinks/
+iosApp/Podfile.lock
+
+# --- Mac & Windows ---
+.DS_Store
+Thumbs.db
+
+# --- Log files & Package files ---
+*.log
+*.jar
+*.class
+
+# --- Misc ---
+captures/
