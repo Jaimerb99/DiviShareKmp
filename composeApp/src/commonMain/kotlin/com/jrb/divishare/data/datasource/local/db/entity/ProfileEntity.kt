@@ -6,7 +6,7 @@ import com.jrb.divishare.domain.model.Profile
 
 @Entity(tableName = "profile_table")
 data class ProfileEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: String,
     val name: String,
     val email: String?,
     val phone: String?,

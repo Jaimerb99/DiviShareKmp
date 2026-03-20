@@ -3,8 +3,10 @@ package com.jrb.divishare.di
 import com.jrb.divishare.data.remote.SupabaseClient
 import com.jrb.divishare.data.repo.ExpenseRepositoryImpl
 import com.jrb.divishare.data.repo.GroupRepositoryImpl
+import com.jrb.divishare.data.repo.UserRepositoryImpl
 import com.jrb.divishare.domain.repo.ExpenseRepository
 import com.jrb.divishare.domain.repo.GroupRepository
+import com.jrb.divishare.domain.repo.UserRepository
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -17,6 +19,8 @@ val appModule: Module = module {
     // Usamos 'single' para que toda la app use la misma instancia del repositorio
     single<GroupRepository> { GroupRepositoryImpl() }
     single<ExpenseRepository> { ExpenseRepositoryImpl() }
+    single<UserRepository> { UserRepositoryImpl() }
+
 
     // 3. VIEWMODELS (La capa Presentation)
     // Aquí iremos añadiendo tus ViewModels usando viewModel { ... }

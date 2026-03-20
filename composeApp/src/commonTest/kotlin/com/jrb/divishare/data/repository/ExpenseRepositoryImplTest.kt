@@ -14,9 +14,11 @@ class ExpenseRepositoryImplTest {
 
     private val repository = ExpenseRepositoryImpl()
 
+     private val user1Id = "11111111-1111-1111-1111-111111111111"
+    private val user2Id = "22222222-2222-2222-2222-222222222222"
+
     @Test
     fun testGetExpensesForGroup_returnsSuccess() = runTest {
-        // Probamos la Llamada 5: Sacar los tickets del grupo 1
         val result = repository.getExpensesForGroup(groupId = 1)
 
         assertTrue(result is DiviResult.Success, "Error al obtener los gastos de Supabase")
@@ -31,25 +33,23 @@ class ExpenseRepositoryImplTest {
 
     @Test
     fun testCreateExpenseAndSplits_insertsSuccessfully() = runTest {
-        // Generamos un ID aleatorio alto para no chocar con los que ya creaste en Postman
         val randomExpenseId = Random.nextInt(100, 10000)
 
-        // Preparamos los datos (Llamada 6 y 7 combinadas)
+        // Usamos los Strings (UUID) en lugar de los Ints
         val newExpense = Expense(
             id = randomExpenseId,
             groupId = 1,
-            paidBy = 1, // Paga el usuario 1
+            paidBy = user1Id,
             description = "Cena de Prueba desde Ktor",
             category = "comida",
             totalAmount = 50.00
         )
 
         val newSplits = listOf(
-            ExpenseSplit(expenseId = randomExpenseId, userId = 1, amountOwed = 25.0),
-            ExpenseSplit(expenseId = randomExpenseId, userId = 2, amountOwed = 25.0)
+            ExpenseSplit(expenseId = randomExpenseId, userId = user1Id, amountOwed = 25.0),
+            ExpenseSplit(expenseId = randomExpenseId, userId = user2Id, amountOwed = 25.0)
         )
 
-        // Ejecutamos la inserción
         val result = repository.createExpense(newExpense, newSplits)
 
         assertTrue(result is DiviResult.Success, "Falló la creación del gasto o de sus divisiones")
@@ -60,12 +60,11 @@ class ExpenseRepositoryImplTest {
     fun testSettleDebt_insertsSuccessfully() = runTest {
         val randomSettlementId = Random.nextInt(100, 10000)
 
-        // Llamada 9: El usuario 2 le paga 10€ al usuario 1
         val settlement = Settlement(
             id = randomSettlementId,
             groupId = 1,
-            paidBy = 2,
-            paidTo = 1,
+            paidBy = user2Id,
+            paidTo = user1Id,
             amount = 10.00
         )
 

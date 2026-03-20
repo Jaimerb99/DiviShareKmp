@@ -8,7 +8,7 @@ import com.jrb.divishare.domain.model.Expense
 data class ExpenseEntity(
     @PrimaryKey val id: Int,
     val groupId: Int,
-    val paidBy: Int,
+    val paidBy: String,
     val description: String,
     val category: String,
     val totalAmount: Double,

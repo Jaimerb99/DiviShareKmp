@@ -17,12 +17,10 @@ class ExpenseRepositoryImpl : ExpenseRepository {
 
     private val client = SupabaseClient.httpClient
 
-    // Llamada 5 de Postman: Obtener gastos de un grupo
     override suspend fun getExpensesForGroup(groupId: Int): DiviResult<List<Expense>> {
         return try {
             val response = client.get("expenses") {
                 parameter("group_id", "eq.$groupId")
-                // El select complejo para traer el nombre del que pagó y los splits
                 parameter("select", "*,profiles!expenses_paid_by_fkey(*),expense_splits(*)")
             }
             DiviResult.Success(response.body())
@@ -32,17 +30,22 @@ class ExpenseRepositoryImpl : ExpenseRepository {
         }
     }
 
-    // Llamada 6 y 7 de Postman: Crear Gasto y sus Splits
     override suspend fun createExpense(expense: Expense, splits: List<ExpenseSplit>): DiviResult<Unit> {
         return try {
-            // 1. Guardamos el Gasto
-            client.post("expenses") {
+            // 1. Guardamos el Gasto y RECUPERAMOS el objeto devuelto por Supabase
+            // Como Ktor parsea arrays por defecto cuando usamos return=representation, le pedimos un List y cogemos el primero
+            val createdExpenses: List<Expense> = client.post("expenses") {
                 setBody(expense)
-            }
+            }.body()
 
-            // 2. Guardamos la división del gasto (Los Splits) enviando la lista de golpe
+            val newExpenseId = createdExpenses.first().id
+
+            // 2. Actualizamos los splits para que apunten al ID que acaba de generar la Base de Datos
+            val splitsWithCorrectId = splits.map { it.copy(expenseId = newExpenseId) }
+
+            // 3. Guardamos la división del gasto (Los Splits)
             client.post("expense_splits") {
-                setBody(splits)
+                setBody(splitsWithCorrectId)
             }
 
             DiviResult.Success(Unit)
@@ -52,7 +55,6 @@ class ExpenseRepositoryImpl : ExpenseRepository {
         }
     }
 
-    // Llamada 9 de Postman: Saldar deuda
     override suspend fun settleDebt(settlement: Settlement): DiviResult<Unit> {
         return try {
             client.post("settlements") {

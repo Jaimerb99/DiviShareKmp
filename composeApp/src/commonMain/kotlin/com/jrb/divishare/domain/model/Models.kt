@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 // --- 1. USUARIOS Y PERFILES ---
 @Serializable
 data class Profile(
-    val id: Int,
+    val id: String,
     val name: String,
     val email: String? = null,
     val phone: String? = null,
@@ -28,13 +28,12 @@ data class Group(
 data class Expense(
     val id: Int,
     @SerialName("group_id") val groupId: Int,
-    @SerialName("paid_by") val paidBy: Int,
+    @SerialName("paid_by") val paidBy: String,
     val description: String,
     val category: String = "general",
     @SerialName("total_amount") val totalAmount: Double,
     val date: String? = null,
 
-    // Estos campos los llenaremos cuando hagamos un SELECT con JOIN (como vimos en Postman)
     @SerialName("profiles") val paidByUser: Profile? = null,
     @SerialName("expense_splits") val splits: List<ExpenseSplit> = emptyList()
 )
@@ -43,7 +42,7 @@ data class Expense(
 @Serializable
 data class ExpenseSplit(
     @SerialName("expense_id") val expenseId: Int,
-    @SerialName("user_id") val userId: Int,
+    @SerialName("user_id") val userId: String,
     @SerialName("amount_owed") val amountOwed: Double
 )
 
@@ -52,8 +51,8 @@ data class ExpenseSplit(
 data class Settlement(
     val id: Int,
     @SerialName("group_id") val groupId: Int,
-    @SerialName("paid_by") val paidBy: Int,
-    @SerialName("paid_to") val paidTo: Int,
+    @SerialName("paid_by") val paidBy: String,
+    @SerialName("paid_to") val paidTo: String,
     val amount: Double,
     val date: String? = null
 )
@@ -63,7 +62,7 @@ data class Settlement(
 @Serializable
 data class GroupBalance(
     @SerialName("group_id") val groupId: Int,
-    @SerialName("user_id") val userId: Int,
+    @SerialName("user_id") val userId: String,
     @SerialName("user_name") val userName: String,
     @SerialName("total_paid") val totalPaid: Double,
     @SerialName("total_consumed") val totalConsumed: Double,

@@ -6,7 +6,7 @@ import com.jrb.divishare.domain.model.ExpenseSplit
 @Entity(tableName = "expense_split_table", primaryKeys = ["expenseId", "userId"])
 data class ExpenseSplitEntity(
     val expenseId: Int,
-    val userId: Int,
+    val userId: String,
     val amountOwed: Double
 )
 
