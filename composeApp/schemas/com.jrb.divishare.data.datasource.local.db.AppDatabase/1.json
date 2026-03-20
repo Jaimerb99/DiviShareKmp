@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f7a049992b23c7e144bcc3eac8339bf7",
+    "identityHash": "ab70c321cb044acc42db1d624e5d83af",
     "entities": [
       {
         "tableName": "group_table",
@@ -46,12 +46,12 @@
       },
       {
         "tableName": "profile_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `email` TEXT, `phone` TEXT, `avatarUrl` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `email` TEXT, `phone` TEXT, `avatarUrl` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -85,7 +85,7 @@
       },
       {
         "tableName": "expense_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `groupId` INTEGER NOT NULL, `paidBy` INTEGER NOT NULL, `description` TEXT NOT NULL, `category` TEXT NOT NULL, `totalAmount` REAL NOT NULL, `date` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `groupId` INTEGER NOT NULL, `paidBy` TEXT NOT NULL, `description` TEXT NOT NULL, `category` TEXT NOT NULL, `totalAmount` REAL NOT NULL, `date` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -102,7 +102,7 @@
           {
             "fieldPath": "paidBy",
             "columnName": "paidBy",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -138,7 +138,7 @@
       },
       {
         "tableName": "expense_split_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`expenseId` INTEGER NOT NULL, `userId` INTEGER NOT NULL, `amountOwed` REAL NOT NULL, PRIMARY KEY(`expenseId`, `userId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`expenseId` INTEGER NOT NULL, `userId` TEXT NOT NULL, `amountOwed` REAL NOT NULL, PRIMARY KEY(`expenseId`, `userId`))",
         "fields": [
           {
             "fieldPath": "expenseId",
@@ -149,7 +149,7 @@
           {
             "fieldPath": "userId",
             "columnName": "userId",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -170,7 +170,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f7a049992b23c7e144bcc3eac8339bf7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ab70c321cb044acc42db1d624e5d83af')"
     ]
   }
 }

@@ -8,4 +8,6 @@ interface UserRepository {
 
     suspend fun sendRecoveryEmail(email: String): DiviResult<Unit>
     suspend fun updatePassword(newPassword: String, token: String): DiviResult<Unit>
+
+    suspend fun loginWithEmail(email: String, password: String): DiviResult<String>
 }

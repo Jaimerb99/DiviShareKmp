@@ -22,6 +22,5 @@ sealed interface Route {
 
     // 5. Perfil y Ajustes
     @Serializable data object Profile : Route
-    @Serializable data object EditProfile : Route
     @Serializable data object Settings : Route
 }

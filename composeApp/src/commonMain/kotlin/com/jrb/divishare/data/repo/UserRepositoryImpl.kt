@@ -1,9 +1,12 @@
 package com.jrb.divishare.data.repo
 
 import com.jrb.divishare.data.remote.SupabaseClient
+import com.jrb.divishare.domain.model.AuthResponse
 import com.jrb.divishare.domain.model.DiviError
 import com.jrb.divishare.domain.model.DiviResult
+import com.jrb.divishare.domain.model.LoginRequest
 import com.jrb.divishare.domain.repo.UserRepository
+import io.ktor.client.call.body
 import io.ktor.client.request.patch
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
@@ -101,6 +104,22 @@ class UserRepositoryImpl : UserRepository {
                 setBody(UpdatePasswordRequest(newPassword))
             }
             DiviResult.Success(Unit)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            DiviResult.Error(DiviError.NetworkError)
+        }
+    }
+
+    override suspend fun loginWithEmail(email: String, password: String): DiviResult<String> {
+        return try {
+            val requestBody = LoginRequest(email = email, password = password)
+            val response: AuthResponse = client.post("https://$projectId.supabase.co/auth/v1/token") {
+                parameter("grant_type", "password")
+                setBody(requestBody)
+            }.body()
+
+            // Devolvemos el ID que viene en el objeto user de la respuesta de Supabase
+            DiviResult.Success(response.user.id)
         } catch (e: Exception) {
             e.printStackTrace()
             DiviResult.Error(DiviError.NetworkError)

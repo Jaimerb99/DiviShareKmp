@@ -102,6 +102,9 @@ kotlin {
 
             implementation(libs.kotlinx.datetime)
 
+            // Preferences
+            implementation(libs.datastore.preferences.core)
+
 
         }
         desktopMain.dependencies {
